@@ -5,6 +5,8 @@ from django.shortcuts import render
 # Create your views here.
 
 def index(resquest):
-	""" Homepage vto say welcome to visitor. """
+	""" 
+	Homepage vto say welcome to visitor. 
+	"""
 
-	return HttpResponse("Hello, welcome to our django website.\nWe're going to do a polls application.")
+	return HttpResponse("Hello, welcome to our django website.<br/>We're going to do a polls application.")

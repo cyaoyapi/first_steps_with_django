@@ -1,31 +1,30 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.shortcuts import loader
 
 from .models import Question
 
 # Create your views here.
 
-def index(resquest):
+def index(request):
 	""" 
 	List the recents questions. 
 	"""
 
 	lastest_questions_list = Question.objects.order_by('-pub_date')[:5]
-	template = loader.get_template('polls/index.html')
+	
 	context = {
 		'lastest_questions_list':lastest_questions_list
 	}
-	return HttpResponse(template.render(context, resquest))
+	return render(request, 'polls/index.html', context)
 
-def detail(resquest, question_id):
+def detail(request, question_id):
 	"""
 	Display a question and its different choices for voting. 
 	"""
 
 	return HttpResponse(f"You're looking at question {question_id}")
 
-def results(resquest, question_id):
+def results(request, question_id):
 	"""
 	Display a question and the results of votes
 	"""

@@ -59,9 +59,10 @@ def create_question(question_text, days):
 	return Question.objects.create(question_text=question_text, pub_date=timezone.now() + 
 		datetime.timedelta(days=days))
 
-class IndexViewTests(TestCase):
+
+class QuestionIndexViewTests(TestCase):
 	"""
-	All tests on the view 'IndexView'
+	All tests on the view 'IndexView'.
 	"""
 
 	def test_no_questions(self):
@@ -143,3 +144,68 @@ class IndexViewTests(TestCase):
 		create_question('Past Question 2 ?', days=-5) # Past question 2 created
 		response = self.client.get(reverse('polls:index'))
 		self.assertQuerysetEqual(response.context['latest_questions_list'], ['<Question: Past Question 2 ?>', '<Question: Past Question 1 ?>'])
+
+class QuestionDetailViewTests(TestCase):
+	"""
+	All tests on the view 'DetailView'.
+	"""
+
+	def test_future_question(self):
+		"""
+		Unit Test
+		---------
+		Given : One question created with future date in the database
+		When : The user requests 'polls/detail.html'
+		Then : Return Http404 page.		
+		"""
+
+		future_question = create_question('Future Question ?', days=30) # Future question created
+		response = self.client.get(reverse('polls:detail', args=(future_question.id,)))
+		self.assertEqual(response.status_code, 404)
+
+	def test_past_question(self):
+		"""
+		Unit Test
+		---------
+		Given : One question created with past date in the database
+		When : The user requests 'polls/detail.html'
+		Then : The context variable 'question' must contains 
+			the past question created.		
+		"""
+
+		past_question = create_question('Past Question ?', days=-30) # Past question created
+		response = self.client.get(reverse('polls:detail', args=(past_question.id,)))
+		self.assertContains(response, past_question.question_text)
+
+
+class QuestionResultsViewTests(TestCase):
+	"""
+	All tests on the view 'ResultsView'.
+	"""
+
+	def test_future_question(self):
+		"""
+		Unit Test
+		---------
+		Given : One question created with future date in the database
+		When : The user requests 'polls/results.html'
+		Then : Return Http404 page.		
+		"""
+
+		future_question = create_question('Future Question ?', days=30) # Future question created
+		response = self.client.get(reverse('polls:results', args=(future_question.id,)))
+		self.assertEqual(response.status_code, 404)
+
+	def test_past_question(self):
+		"""
+		Unit Test
+		---------
+		Given : One question created with past date in the database
+		When : The user requests 'polls/results.html'
+		Then : The context variable 'question' must contains 
+			the past question created.		
+		"""
+
+		past_question = create_question('Past Question ?', days=-30) # Past question created
+		response = self.client.get(reverse('polls:results', args=(past_question.id,)))
+		self.assertContains(response, past_question.question_text)

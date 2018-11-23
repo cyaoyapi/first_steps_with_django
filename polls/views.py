@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Question
 
@@ -22,11 +22,8 @@ def detail(request, question_id):
 	Display a question and its different choices for voting. 
 	"""
 
-	try:
-		question = Question.objects.get(pk=question_id)
-	except Question.DoesNotExist:
-		raise Http404(f"This question does not exist")
-	return render(request, 'polls/detail.html', {question:question})
+	question = get_object_or_404(Question, pk=question_id)
+	return render(request, 'polls/detail.html', {'question':question})
 
 def results(request, question_id):
 	"""

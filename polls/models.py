@@ -22,10 +22,10 @@ class Question(models.Model):
 
     def was_published_recently(self):
     	"""
-    	Return true if the question was published recently else false
+    	Return True if the question was published recently else False.
     	"""
 
-    	return self.pub_date >= timezone.now() - datetime.delta(days=1)
+    	return timezone.now() - datetime.timedelta(days=1) <= self.pub_date <= timezone.now()
 
 
 class Choice(models.Model):

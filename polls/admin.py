@@ -7,7 +7,10 @@ class QuestionAdmin(admin.ModelAdmin):
 	A model to customize the form of question in the administration site.
 	"""
 
-	fields = ['pub_date','question_text']
+	fieldsets = [
+		(None , {'fields': ['question_text']}),
+		('Date information' , {'fields': ['pub_date']}),
+	]
 
 # Register your models here.
 

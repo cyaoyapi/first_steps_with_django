@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Question, Choice
 
-class ChoiceInline(admin.StackedInline):
+class ChoiceInline(admin.TabularInline):
 	"""
 	Using it to add Choice form as sub-form of Question form in administration site.
 	"""

@@ -17,6 +17,7 @@ class QuestionAdmin(admin.ModelAdmin):
 	A model to customize the form of question in the administration site.
 	"""
 	list_display = ('question_text', 'pub_date', 'was_published_recently')
+	list_filter = ['pub_date']
 	fieldsets = [
 		(None , {'fields': ['question_text']}),
 		('Date information' , {'fields': ['pub_date']}),
